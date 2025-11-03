@@ -52,6 +52,7 @@ Fill in these settings:
 - **Branch**: `main` (or your default branch)
 - **Root Directory**: `backend`
 - **Runtime**: `Python 3`
+- **Python Version**: `3.11.6` ⚠️ **IMPORTANT: Click "Advanced" and set this!**
 - **Build Command**: 
   ```bash
   pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
