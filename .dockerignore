@@ -1,0 +1,12 @@
+**/__pycache__
+**/*.pyc
+**/.git
+**/.gitignore
+**/node_modules
+**/.env
+**/db.sqlite3
+**/media
+**/.pytest_cache
+**/venv
+**/env
+
