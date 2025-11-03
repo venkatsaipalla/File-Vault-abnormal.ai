@@ -1,141 +1,140 @@
 # Abnormal File Vault
 
-A secure and efficient file hosting application with intelligent deduplication and advanced search & filtering capabilities.
+A secure file hosting application with intelligent deduplication and advanced search & filtering.
 
-## Features
+## 🚀 Quick Start
 
-### 🔄 File Deduplication
-- **Automatic Deduplication**: Files are automatically deduplicated using SHA-256 hashing
-- **Storage Optimization**: Only unique files are stored physically; duplicates reference the original
-- **Upload Tracking**: Tracks how many times a file has been uploaded
-- **Space Savings**: Displays statistics on space saved through deduplication
+## Deployed Link : https://filevault-frontend.onrender.com/
 
-### 🔍 Search & Filtering
-- **Name Search**: Search files by name (case-insensitive)
-- **Size Filtering**: Filter by file size range (min/max bytes)
-- **MIME Type Filter**: Filter by file type (e.g., image/png, application/pdf)
-- **Date Range**: Filter files by upload date range
-- **Duplicate Filter**: View only files that have been duplicated
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- (Optional) Docker & Docker Compose
 
-### 📊 Statistics Dashboard
+---
+
+## 📋 Running Locally
+
+### Backend (Django)
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
+
+Backend runs at: **http://localhost:8000**
+
+### Frontend (React)
+
+Open a new terminal:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Frontend runs at: **http://localhost:3000**
+
+---
+
+## 🐳 Using Docker
+
+```bash
+docker-compose up --build
+```
+
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8000
+
+---
+
+## 📦 Creating Submission Package
+
+```bash
+./create_submission.sh
+```
+
+Creates `{username}_{YYYYMMDD}.zip` in project root.
+
+---
+
+## 🎯 Project Explanation
+
+### Features Developed
+
+#### 1. File Deduplication System
+- **SHA-256 Hashing**: Each file is hashed using SHA-256 algorithm for unique identification
+- **Automatic Detection**: System automatically detects duplicate files during upload
+- **Storage Optimization**: Only unique files are physically stored; duplicates reference the original
+- **Upload Tracking**: Tracks how many times each unique file has been uploaded
+- **Space Savings Display**: Shows statistics on storage space saved through deduplication
+
+**Implementation Details:**
+- Hash calculation happens during file upload
+- Database lookup by hash to check for existing files
+- Increments upload count for duplicates (no new file stored)
+- Creates new database entry for unique files
+
+#### 2. Search & Filtering System
+- **Name Search**: Case-insensitive search by file name using Django's `icontains` filter
+- **Size Filtering**: Filter files by size range (min/max bytes)
+- **MIME Type Filter**: Filter by file type (e.g., `image/png`, `application/pdf`)
+- **Date Range Filter**: Filter files by upload date range
+- **Duplicate Filter**: Option to show only files that have been duplicated (upload_count > 1)
+
+**Implementation Details:**
+- Query parameters passed to Django REST Framework ViewSet
+- Dynamic queryset filtering based on provided parameters
+- Multiple filters can be combined
+- Efficient database queries with proper indexing
+
+#### 3. Statistics Dashboard
+- Real-time statistics display
 - Total files count
 - Unique files count
 - Duplicate entries count
-- Total storage used
-- Space saved through deduplication
+- Total storage used (in MB)
+- Space saved through deduplication (in MB)
 
-## Technology Stack
+#### 4. Modern React Frontend
+- Responsive UI with modern design
+- File upload with drag & drop support
+- Real-time search and filtering
+- File list with download functionality
+- Statistics panel with visual cards
 
-- **Backend**: Django 4.2.7 + Django REST Framework
+#### 5. RESTful API
+- Django REST Framework for API endpoints
+- Proper pagination support
+- CORS configuration for frontend integration
+- Error handling and validation
+
+### Technology Stack
+
+- **Backend**: Django 4.2.7 + Django REST Framework 3.14.0
 - **Frontend**: React 18.2.0
+- **Database**: SQLite (production-ready for PostgreSQL)
 - **Containerization**: Docker & Docker Compose
-- **Database**: SQLite (can be easily switched to PostgreSQL)
+- **Deployment**: Render.com (both frontend and backend)
 
-## Project Structure
+### Architecture
 
-```
-file-fault-abnormal/
-├── backend/
-│   ├── filevault/          # Django project settings
-│   ├── files/              # Files app with deduplication logic
-│   ├── manage.py
-│   ├── requirements.txt
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── services/       # API service layer
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── package.json
-│   └── Dockerfile
-├── docker-compose.yml
-├── create_submission.sh    # Script to create submission ZIP
-└── README.md
-```
+- **Backend**: Django REST API with ViewSets and Serializers
+- **Frontend**: Component-based React architecture
+- **API Communication**: Axios for HTTP requests
+- **State Management**: React hooks (useState, useEffect)
+- **File Storage**: Local filesystem (easily switchable to cloud storage)
 
-## Setup Instructions
+---
 
-### Prerequisites
-- Docker and Docker Compose installed
-- OR Python 3.11+ and Node.js 18+ (for local development)
+## 📚 API Endpoints
 
-### Option 1: Using Docker (Recommended)
-
-1. **Clone/Navigate to the project directory**
-
-2. **Start the services**
-   ```bash
-   docker-compose up --build
-   ```
-
-3. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - API Documentation: http://localhost:8000/api/files/
-
-4. **Run database migrations** (if needed)
-   ```bash
-   docker-compose exec backend python manage.py migrate
-   ```
-
-5. **Create admin user** (optional)
-   ```bash
-   docker-compose exec backend python manage.py createsuperuser
-   ```
-
-### Option 2: Local Development
-
-#### Backend Setup
-
-1. **Navigate to backend directory**
-   ```bash
-   cd backend
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run migrations**
-   ```bash
-   python manage.py migrate
-   ```
-
-5. **Start development server**
-   ```bash
-   python manage.py runserver
-   ```
-
-#### Frontend Setup
-
-1. **Navigate to frontend directory** (in a new terminal)
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start development server**
-   ```bash
-   npm start
-   ```
-
-## API Endpoints
-
-### Files
-
-- `GET /api/files/` - List all files (with filters)
+- `GET /api/files/` - List all files (with query parameters for filtering)
 - `POST /api/files/` - Upload a new file
 - `GET /api/files/{id}/` - Get file details
 - `GET /api/files/{id}/download/` - Download a file
@@ -143,137 +142,24 @@ file-fault-abnormal/
 
 ### Query Parameters for GET /api/files/
 
-- `search` - Search by file name (case-insensitive)
+- `search` - Search by file name
 - `min_size` - Minimum file size in bytes
 - `max_size` - Maximum file size in bytes
-- `mime_type` - Filter by MIME type (partial match)
-- `date_from` - Filter files uploaded after this date (YYYY-MM-DD)
-- `date_to` - Filter files uploaded before this date (YYYY-MM-DD)
-- `duplicates_only` - Set to 'true' to show only duplicated files
-
-### Example API Calls
-
-```bash
-# Upload a file
-curl -X POST http://localhost:8000/api/files/ \
-  -F "file=@example.pdf"
-
-# Search files by name
-curl "http://localhost:8000/api/files/?search=example"
-
-# Filter by size
-curl "http://localhost:8000/api/files/?min_size=1024&max_size=1048576"
-
-# Get statistics
-curl http://localhost:8000/api/files/stats/
-```
-
-## How Deduplication Works
-
-1. When a file is uploaded, the system calculates its SHA-256 hash
-2. The system checks if a file with the same hash already exists
-3. If it exists:
-   - The upload count is incremented
-   - No physical file is stored (space saved!)
-   - A reference to the existing file is created
-4. If it's new:
-   - The file is saved to disk
-   - Metadata is stored in the database
-
-## Creating Submission Package
-
-To create the submission ZIP file as required:
-
-```bash
-./create_submission.sh
-```
-
-This will create a ZIP file named `{username}_{YYYYMMDD}.zip` in the project root.
-
-**Note**: Make sure to test the ZIP file before submission to ensure all necessary files are included.
-
-## Development Notes
-
-### Database
-
-The project uses SQLite by default. To use PostgreSQL:
-
-1. Update `backend/filevault/settings.py` DATABASES configuration
-2. Update `docker-compose.yml` to include a PostgreSQL service
-3. Install `psycopg2` in requirements.txt
-
-### Media Files
-
-Uploaded files are stored in `backend/media/` directory. This directory is excluded from version control but is included in the Docker volume.
-
-### Security Considerations
-
-For production deployment:
-- Change `SECRET_KEY` in settings.py
-- Set `DEBUG = False`
-- Configure proper CORS origins
-- Use a production-ready database (PostgreSQL)
-- Implement authentication/authorization
-- Add file size limits
-- Implement virus scanning
-
-## Testing the Application
-
-1. **Upload multiple copies of the same file**
-   - Upload a file
-   - Upload the same file again
-   - Notice that it shows as a duplicate and space is saved
-
-2. **Test search and filtering**
-   - Upload files of different types and sizes
-   - Use the search bar to find files by name
-   - Apply filters to narrow down results
-
-3. **Check statistics**
-   - View the statistics panel to see deduplication savings
-   - Monitor total storage usage
-
-## Troubleshooting
-
-### Backend won't start
-- Check if port 8000 is already in use
-- Verify Python dependencies are installed
-- Run `python manage.py migrate` to set up database
-
-### Frontend won't start
-- Check if port 3000 is already in use
-- Verify Node.js version (18+)
-- Delete `node_modules` and run `npm install` again
-
-### CORS errors
-- Ensure `django-cors-headers` is installed
-- Check CORS settings in `settings.py`
-- Verify frontend is connecting to correct backend URL
-
-### Files not uploading
-- Check backend logs for errors
-- Verify media directory permissions
-- Ensure file size is within limits
-
-## Future Enhancements
-
-- User authentication and authorization
-- File versioning
-- Advanced analytics dashboard
-- Support for large file uploads (chunked uploads)
-- File preview for images and documents
-- File sharing and permissions
-- Integration with cloud storage (S3, etc.)
-
-## License
-
-This project is created for the Abnormal AI take-home challenge.
-
-## Author
-
-Created using AI-powered development tools (Cursor, Claude) to demonstrate efficient, production-grade software development practices.
+- `mime_type` - Filter by MIME type
+- `date_from` - Filter by upload date (from)
+- `date_to` - Filter by upload date (to)
+- `duplicates_only` - Show only duplicated files (true/false)
 
 ---
 
-**Submission Date**: $(date +%Y-%m-%d)
+## 🔧 Development Notes
 
+- **Database**: SQLite for development, easily switchable to PostgreSQL
+- **Media Files**: Stored in `backend/media/` directory
+- **Static Files**: Collected in `backend/staticfiles/` for production
+
+---
+
+## 📝 License
+
+Created for the Abnormal AI take-home challenge by venkata sai palla.

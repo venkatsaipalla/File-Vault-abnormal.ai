@@ -62,6 +62,7 @@ function App() {
       <header className="App-header">
         <h1>🛡️ Abnormal File Vault</h1>
         <p>Secure file hosting with intelligent deduplication</p>
+        <p className='author'>By Venkata Sai Palla (venkatasaipalla2019@gmail.com)</p>
       </header>
 
       <div className="App-container">
