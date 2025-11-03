@@ -125,12 +125,29 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # CORS settings
+# Allow frontend URL from environment variable, or use localhost for development
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+
+# Default allowed origins for local development
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+# Add frontend URL from environment variable (for production)
+if FRONTEND_URL and FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+
+# In development (DEBUG=True), allow all origins for easier testing
+# In production (DEBUG=False), only allow specific origins from CORS_ALLOWED_ORIGINS
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    # Production: only allow specified origins
+    CORS_ALLOW_CREDENTIALS = True
+    # Ensure we have at least one origin
+    if not CORS_ALLOWED_ORIGINS and FRONTEND_URL:
+        CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
 
 # REST Framework settings
 REST_FRAMEWORK = {

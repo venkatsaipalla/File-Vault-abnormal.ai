@@ -52,7 +52,16 @@ Fill in these settings:
 - **Branch**: `main` (or your default branch)
 - **Root Directory**: `backend`
 - **Runtime**: `Python 3`
-- **Python Version**: `3.11.6` ⚠️ **IMPORTANT: Click "Advanced" and set this!**
+
+**⚠️ CRITICAL: Set Python Version**
+1. Scroll down and click **"Advanced"** section
+2. Look for **"Python Version"** field (or "Environment Variables")
+3. Set **Python Version** to: `3.11.6`
+   - If you don't see this field, add environment variable:
+     - Key: `PYTHON_VERSION`
+     - Value: `3.11.6`
+
+**Build Settings:**
 - **Build Command**: 
   ```bash
   pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
@@ -61,6 +70,11 @@ Fill in these settings:
   ```bash
   gunicorn filevault.wsgi:application --bind 0.0.0.0:$PORT
   ```
+
+**Note**: If Python version setting doesn't work, modify Build Command to force Python 3.11:
+```bash
+python3.11 -m pip install -r requirements.txt && python3.11 manage.py migrate && python3.11 manage.py collectstatic --noinput
+```
 
 ### 2.3 Add Environment Variables
 Click **"Advanced"** → **"Add Environment Variable"** and add:
@@ -93,7 +107,7 @@ Click **"Advanced"** → **"Add Environment Variable"** and add:
 ### 2.6 Deploy Backend
 Click **"Create Web Service"** and wait for deployment (~2-3 minutes)
 
-**Note your backend URL**: `https://filevault-backend.onrender.com`
+**Note your backend URL**: `https://file-vault-abnormal-ai.onrender.com` (or your actual Render URL)
 
 ---
 
@@ -127,7 +141,7 @@ Click **"Advanced"** → **"Add Environment Variable"**:
 
 | Key | Value |
 |-----|-------|
-| `REACT_APP_API_URL` | `https://filevault-backend.onrender.com/api` |
+| `REACT_APP_API_URL` | `https://file-vault-abnormal-ai.onrender.com/api` |
 
 **Important**: Use your actual backend URL from Step 2.6!
 
